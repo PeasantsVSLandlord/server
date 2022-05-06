@@ -108,3 +108,9 @@ const isNoWingPlane: CheckCards = cards => {
     } else return false;
 };
 
+class BaseLogic {
+    isSingle: CheckCards;
+
+}
+BaseLogic.prototype.isSingle = isSingle;
+export { BaseLogic };

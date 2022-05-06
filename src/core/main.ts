@@ -1,4 +1,6 @@
 import { cardSort, dealCards } from "./CardsManage/DealCards";
+import { BaseLogic } from "./ClassicLogic";
+
 
 
 
@@ -12,4 +14,8 @@ let cards = [
     { name: "Q", num: 10, suit: "CLUB" }
 ];
 cardSort(cards)
+
+
+let baseLogic = new BaseLogic();
+console.log(baseLogic.isSingle(cards))
 
