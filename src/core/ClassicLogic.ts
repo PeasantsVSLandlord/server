@@ -45,7 +45,7 @@ const isRocket: CheckCards = cards => {
     } else return false;
 };
 
-//三张
+//三条
 const isTriple: CheckCards = cards => {
     if (cards.length === 3) {
         const triple = cards.map(v => v.num);
@@ -62,7 +62,7 @@ const isTripleAndSingle: CheckCards = cards => {
     } else return false;
 };
 
-//三带二
+//三带一对
 const isTripleAndDouble: CheckCards = cards => {
     if (cards.length === 5) {
         let triple = cards.map(v => v.num);
@@ -81,7 +81,7 @@ const isBomb: CheckCards = cards => {
     } else return false;
 };
 
-//是否无翼飞机(N个连续数的三张, N>1)
+//无翼飞机(N个连续数的三张, N>1)
 const isNoWingPlane: CheckCards = cards => {
     if (cards.length >= 6 && cards.length % 3 === 0) {
         let points = cards.map(v => v.num);
@@ -92,7 +92,7 @@ const isNoWingPlane: CheckCards = cards => {
             splicesArr.push(splices);
         }
         let flag = true;
-        //判断是否有非三连牌
+        //判断是否有非三条
         splicesArr.forEach(v => {
             if (!v.every(item => item === v[0])) {
                 flag = false;
