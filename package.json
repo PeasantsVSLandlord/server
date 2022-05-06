@@ -26,7 +26,8 @@
   },
   "homepage": "https://github.com/PeasantsVSLandlord/server#readme",
   "dependencies": {
-    "koa": "^2.13.4"
+    "koa": "^2.13.4",
+    "ts-node": "^10.7.0"
   },
   "devDependencies": {
     "@types/koa": "^2.13.4",

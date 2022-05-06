@@ -1,5 +1,20 @@
-import {Card, SUIT, SpecialCardName} from "../CardsDeclare";
-import {Random} from "../utils/Random";
+import {Card, SUIT, DealCards} from "../CardsDeclare";
+
+/**
+ * 牌组排序
+ * @param cards 牌组(手牌、地主牌等)
+ */
+function cardSort(cards: Array<Card>) {
+    // 原地排序强于冒泡排序，所以ts-ignore大于bubbleSort()
+    // @ts-ignore
+    cards.sort((a, b) => {
+        if (a.num < b.num) {
+            return -1;
+        } else if (a.num > b.num) {
+            return 1;
+        } else return 0;
+    })
+}
 
 /**
  * 发牌
@@ -8,7 +23,7 @@ import {Random} from "../utils/Random";
  * @param isShuffle 是否洗牌，默认洗
  * @param hasUniversal 是否赖子，默认否
  */
-function dealCards(player: number = 3, cardBundleNum: number = 1, isShuffle: boolean = true, hasUniversal: boolean = false): Array<Array<Card>> {
+export function dealCards(player: number = 3, cardBundleNum: number = 1, isShuffle: boolean = true, hasUniversal: boolean = false): DealCards {
     //TODO 赖子玩法、不洗牌
     //制牌
     let cardHeap: Array<Card> = [];   //牌堆
@@ -23,25 +38,26 @@ function dealCards(player: number = 3, cardBundleNum: number = 1, isShuffle: boo
         cardHeap.push({num: 15, suit: SUIT[1]});
     }
     //发牌
-    let playerCards: Array<Array<Card>> = new Array<Array<Card>>(player)  //玩家的手牌
     //WARNING：不能使用Array.fill快速填充空数组，否则会产生相同的引用
-    for (let i = 0; i < playerCards.length; i++) {
-        playerCards[i] = []
-    }
-    //洗牌
+    //错误示范：new Array<Array<Card>>(player).fill([])
+    let playerCards: Array<Array<Card>> = new Array<Array<Card>>(player).fill(undefined).map(() => []) //玩家的手牌
+    //洗10轮牌
     for (let i = 0; i < 10; i++) {
-        cardHeap.sort(function () {
+        cardHeap.sort(() => {
             return (0.5 - Math.random());
         });
     }
-    //发牌
+    //取3张地主牌
+    let lordCards = cardHeap.splice(0, 3);
+    //发牌并排序
     cardHeap.forEach((v, i) => {
         playerCards[i % player].push(v);
     })
-
-    //TODO 排序
-    console.log(playerCards)
-    return playerCards;
+    playerCards.forEach(player => {
+        cardSort(player);
+    })
+    cardSort(lordCards);
+    return {playerCards, lordCards};
 }
 
 dealCards()

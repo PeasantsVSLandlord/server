@@ -27,3 +27,11 @@ export interface Card {
     suit: string,   //花色
     isUniversal?: boolean  //是否赖子
 }
+
+/**
+ * 发牌结构
+ */
+export interface DealCards {
+    playerCards: Array<Array<Card>>,  //玩家手牌
+    lordCards: Array<Card>,  //地主牌
+}
