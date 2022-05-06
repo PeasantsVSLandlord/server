@@ -1,3 +1,5 @@
+// shuffle洗牌,cut切牌,deal发牌,sort理牌,draw摸牌,play打出,discard弃牌
+
 /**
  * 花色声明
  */
@@ -9,21 +11,16 @@ export enum SUIT {
 }
 
 /**
- * 特殊花色
- * X = 10, S = 小王, Z = 大王
+ * 牌值映射
  */
-export enum SpecialCardName {
-    A = 1,
-    X = 10,
-    J, Q, K,
-    S = 14, Z = 15
-}
+export const CardMap = ["", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "2", "LJoker", "BJoker"];
 
 /**
  * 扑克定义
  */
 export interface Card {
-    num: number,  //点数
+    name: string, //显示点数
+    num: number,  //实际点数
     suit: string,   //花色
     isUniversal?: boolean  //是否赖子
 }
