@@ -21,10 +21,9 @@ function cardSort(cards: Array<Card>) {
  * @param player 玩家人数，默认3人
  * @param cardBundleNum 发牌套数，默认1套
  * @param isShuffle 是否洗牌，默认洗
- * @param hasUniversal 是否赖子，默认否
  */
-export function dealCards(player: number = 3, cardBundleNum: number = 1, isShuffle: boolean = true, hasUniversal: boolean = false): DealCards {
-    //TODO 赖子玩法、不洗牌
+export function dealCards(player: number = 3, cardBundleNum: number = 1, isShuffle: boolean = true): DealCards {
+    //TODO 不洗牌
     //制牌
     let cardHeap: Array<Card> = [];   //牌堆
     for (let i = 0; i < cardBundleNum; i++) {
@@ -59,5 +58,3 @@ export function dealCards(player: number = 3, cardBundleNum: number = 1, isShuff
     cardSort(lordCards);
     return {playerCards, lordCards};
 }
-
-dealCards()
