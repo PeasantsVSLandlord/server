@@ -3,6 +3,7 @@
  * 进来的牌要先从大到小排过序
  */
 import { Card } from "./CardsDeclare";
+import exp from "constants";
 
 interface CheckCards {
     (cards: Array<Card>): boolean;
@@ -25,92 +26,126 @@ function isGrowUp(arr: number[], i: number) {
     }
 }
 
-//单张
-const isSingle: CheckCards = cards => {
-    return cards.length === 1;
-};
+class ClassicLogic {
+    constructor() {
+    }
 
-//对子
-const isDouble: CheckCards = cards => {
-    if (cards.length === 2) {
-        return cards[0].num === cards[1].num;
-    } else return false;
-};
+    //单张
+    isSingle: CheckCards = cards => {
+        return cards.length === 1;
+    };
+    //对子
+    isDouble: CheckCards = cards => {
+        if (cards.length === 2) {
+            return cards[0].num === cards[1].num;
+        } else return false;
+    };
+    //火箭(王炸)
+    isRocket: CheckCards = cards => {
+        if (cards.length === 2) {
+            const cardPoints = cards.map(v => v.num);
+            return cardPoints.includes(14) && cardPoints.includes(15);
+        } else return false;
+    };
 
-//火箭(王炸)
-const isRocket: CheckCards = cards => {
-    if (cards.length === 2) {
-        const cardPoints = cards.map(v => v.num);
-        return cardPoints.includes(14) && cardPoints.includes(15);
-    } else return false;
-};
+    //三条
+    isTriple: CheckCards = cards => {
+        if (cards.length === 3) {
+            const triple = cards.map(v => v.num);
+            return triple.every(item => item === triple[0]);
+        } else return false;
+    };
 
-//三条
-const isTriple: CheckCards = cards => {
-    if (cards.length === 3) {
-        const triple = cards.map(v => v.num);
-        return triple.every(item => item === triple[0]);
-    } else return false;
-};
+    //三带一
+    isTripleAndSingle: CheckCards = cards => {
+        if (cards.length === 4) {
+            let triple = cards.map(v => v.num);
+            const single = triple.splice(0, 1);
+            return triple[0] !== single[0] && triple.every(item => item === triple[0]);
+        } else return false;
+    };
 
-//三带一
-const isTripleAndSingle: CheckCards = cards => {
-    if (cards.length === 4) {
-        let triple = cards.map(v => v.num);
-        let single = triple.splice(0, 1);
-        return triple[0] !== single[0] && triple.every(item => item === triple[0]);
-    } else return false;
-};
+    //三带一对
+    isTripleAndDouble: CheckCards = cards => {
+        if (cards.length === 5) {
+            let triple = cards.map(v => v.num);
+            const _double = triple.splice(0, 2);
+            return triple[0] !== _double[0]
+                && triple.every(item => item === triple[0])
+                && _double[0] === _double[1];
+        } else return false;
+    };
 
-//三带一对
-const isTripleAndDouble: CheckCards = cards => {
-    if (cards.length === 5) {
-        let triple = cards.map(v => v.num);
-        let _double = triple.splice(0, 2);
-        return triple[0] !== _double[0]
-            && triple.every(item => item === triple[0])
-            && _double[0] === _double[1];
-    } else return false;
-};
+    //炸弹(四张)
+    isBomb: CheckCards = cards => {
+        if (cards.length === 4) {
+            const quad = cards.map(v => v.num);
+            return quad.every(item => item === quad[0]);
+        } else return false;
+    };
 
-//炸弹(四张)
-const isBomb: CheckCards = cards => {
-    if (cards.length === 4) {
-        const quad = cards.map(v => v.num);
-        return quad.every(item => item === quad[0]);
-    } else return false;
-};
-
-//无翼飞机(N个连续数的三张, N>1)
-const isNoWingPlane: CheckCards = cards => {
-    if (cards.length >= 6 && cards.length % 3 === 0) {
-        let points = cards.map(v => v.num);
-        let splicesArr = [];
-        //3张牌切一组
-        while (points.length > 0) {
-            let splices = points.splice(0, 3);
-            splicesArr.push(splices);
-        }
-        let flag = true;
-        //判断是否有非三条
-        splicesArr.forEach(v => {
-            if (!v.every(item => item === v[0])) {
+    //无翼飞机(N个连续数的三张, N>1)
+    isNoWingPlane: CheckCards = cards => {
+        if (cards.length >= 6 && cards.length % 3 === 0) {
+            let points = cards.map(v => v.num);
+            let splicesArr = [];
+            //3张牌切一组
+            while (points.length > 0) {
+                let splices = points.splice(0, 3);
+                splicesArr.push(splices);
+            }
+            let flag = true;
+            //判断是否有非三条
+            splicesArr.forEach(v => {
+                if (!v.every(item => item === v[0])) {
+                    flag = false;
+                }
+            });
+            //判断所有三连牌是否递增
+            let splicesIndex = splicesArr.map(v => v[0]);
+            if (!isGrowUp(splicesIndex, splicesIndex.length - 1)) {
                 flag = false;
             }
-        });
-        //判断所有三连牌是否递增
-        let splicesIndex = splicesArr.map(v => v[0]);
-        console.log(splicesIndex);
-        if (!isGrowUp(splicesIndex, splicesIndex.length - 1)) {
-            flag = false;
-        }
-        return flag;
-    } else return false;
-};
+            return flag;
+        } else return false;
+    };
 
-class BaseLogic {
-    isSingle: CheckCards;
+    //四带二
+    isQuadAndTwoSingle: CheckCards = cards => {
+        if (cards.length === 6) {
+            let quad = cards.map(v => v.num);
+            const others = quad.splice(0, 2);
+            return quad[0] !== others[0]
+                && quad.every(item => item === quad[0])
+                && others[0] === others[1];
+        } else return false;
+    };
+
+    //四带两对
+    isQuadAndTwoDouble: CheckCards = cards => {
+        if (cards.length === 8) {
+            let quad = cards.map(v => v.num);
+            const double1 = quad.splice(0, 2);
+            const double2 = quad.splice(0, 2);
+            return double1[0] === double1[1]
+                && double2[0] === double1[1]
+                && quad.every(item => item === quad[0]);
+        } else return false;
+    };
+
+    //顺子
+    isStraight: CheckCards = cards => {
+        if (cards.length >= 5) {
+            let flag = true;
+            let straight = cards.map(v => v[0]);
+            if (!isGrowUp(straight, straight.length - 1)) {
+                flag = false;
+            }
+            return flag;
+        } else return false;
+    };
 
 }
-BaseLogic.prototype.isSingle = isSingle;
-export { BaseLogic };
+
+
+export { ClassicLogic };

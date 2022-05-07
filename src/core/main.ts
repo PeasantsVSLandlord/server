@@ -1,7 +1,5 @@
 import { cardSort, dealCards } from "./CardsManage/DealCards";
-import { BaseLogic } from "./ClassicLogic";
-
-
+import { ClassicLogic } from "./ClassicLogic";
 
 
 // dealCards()
@@ -13,9 +11,11 @@ let cards = [
     { name: "Q", num: 10, suit: "DIAMOND" },
     { name: "Q", num: 10, suit: "CLUB" }
 ];
-cardSort(cards)
+cardSort(cards);
 
 
-let baseLogic = new BaseLogic();
-console.log(baseLogic.isSingle(cards))
+let baseLogic = new ClassicLogic();
+Object.getOwnPropertyNames(baseLogic).forEach(k => {
+    console.log(k, baseLogic[k](cards));
+});
 
