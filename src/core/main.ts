@@ -1,21 +1,25 @@
-import { cardSort, dealCards } from "./CardsManage/DealCards";
+import { dealCards } from "./CardsManage/DealCards";
 import { ClassicLogic } from "./ClassicLogic";
+import { cardSort, isGrowUp } from "./utils/CardUtils";
 
-
-// dealCards()
+// console.log(dealCards())
 
 
 let cards = [
-    { name: "Q", num: 10, suit: "SPADE" },
-    // { name: "2", num: 13, suit: "CLUB" },
-    { name: "Q", num: 10, suit: "DIAMOND" },
-    { name: "Q", num: 10, suit: "CLUB" }
+    { name: 'A', num: 12, suit: 'DIAMOND' },
+    { name: 'A', num: 12, suit: 'DIAMOND' },
+    { name: 'K', num: 11, suit: 'DIAMOND' },
+    { name: 'K', num: 11, suit: 'DIAMOND' },
+    { name: 'Q', num: 10, suit: 'HEART' },
+    { name: 'Q', num: 10, suit: 'HEART' },
+    { name: 'J', num: 9, suit: 'HEART' },
+    { name: 'J', num: 9, suit: 'HEART' },
+    { name: '10', num: 8, suit: 'HEART' },
+    { name: '10', num: 8, suit: 'HEART' },
 ];
-cardSort(cards);
+const baseLogic = new ClassicLogic(cards);
 
-
-let baseLogic = new ClassicLogic();
 Object.getOwnPropertyNames(baseLogic).forEach(k => {
-    console.log(k, baseLogic[k](cards));
+    if (k !== "cards") console.log(k, baseLogic[k]());
 });
 

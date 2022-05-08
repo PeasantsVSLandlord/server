@@ -31,11 +31,16 @@
     "dependencies": {
         "@nestjs/common": "^8.0.0",
         "@nestjs/core": "^8.0.0",
+        "@nestjs/mapped-types": "*",
         "@nestjs/platform-express": "^8.0.0",
+        "@nestjs/platform-socket.io": "^8.4.4",
+        "@nestjs/websockets": "^8.4.4",
         "reflect-metadata": "^0.1.13",
         "rimraf": "^3.0.2",
         "rxjs": "^7.2.0",
-        "ts-node": "^10.7.0"
+        "socket.io": "^4.5.0",
+        "ts-node": "^10.7.0",
+        "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.4.0"
     },
     "devDependencies": {
         "@nestjs/cli": "^8.0.0",
@@ -76,5 +81,9 @@
         ],
         "coverageDirectory": "../coverage",
         "testEnvironment": "node"
+    },
+    "optionalDependencies": {
+        "bufferutil": "^4.0.6",
+        "utf-8-validate": "^5.0.9"
     }
 }

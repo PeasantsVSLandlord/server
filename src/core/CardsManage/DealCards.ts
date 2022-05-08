@@ -1,4 +1,5 @@
 import { Card, SUIT, DealCards, CardMap } from "../CardsDeclare";
+import { cardSort } from "../utils/CardUtils";
 
 /**
  * 发牌
@@ -43,20 +44,4 @@ export function dealCards(player: number = 3, cardBundleNum: number = 1, isShuff
     console.log(lordCards)
     console.log(playerCards)
     return { playerCards, lordCards };
-}
-
-/**
- * 牌组排序
- * @param cards 牌组(手牌、地主牌等)
- */
-export function cardSort(cards: Array<Card>) {
-    // 原地排序强于冒泡排序，所以ts-ignore大于bubbleSort()
-    // @ts-ignore
-    cards.sort((a, b) => {
-        if (a.num > b.num) {
-            return -1;
-        } else if (a.num < b.num) {
-            return 1;
-        } else return 0;
-    });
 }
