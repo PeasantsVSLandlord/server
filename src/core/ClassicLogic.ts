@@ -151,6 +151,18 @@ class ClassicLogic {
     isDoubleStraight: CheckCards = () => {
         return isStraightN(2, this.cards);
     };
+
+    //小飞机(三带一*2N)
+    isSmallPlane: CheckCards = () => {
+        if (this.cards.length >= 8 && this.cards.length % 4 === 0) {
+            let points = this.cards.map(v => v.num);
+            if (points.includes(13) || points.includes(14) || points.includes(15)) {
+                return false;
+            }
+            let splicesArr = [];
+            //
+        } else return false;
+    };
 }
 
 
