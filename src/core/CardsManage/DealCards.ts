@@ -41,7 +41,5 @@ export function dealCards(player: number = 3, cardBundleNum: number = 1, isShuff
         cardSort(player);
     });
     cardSort(lordCards);
-    console.log(lordCards)
-    console.log(playerCards)
     return { playerCards, lordCards };
 }
