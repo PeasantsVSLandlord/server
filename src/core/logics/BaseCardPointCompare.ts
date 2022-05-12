@@ -41,6 +41,7 @@ class BaseCardPointCompareBackup {
     }
 
     compare = () => {
+        //TODO 航天飞机需要两个炸弹
         //火箭不能被管
         if (this._lastCardsType.includes("isRocket")) return false;
         //上家出炸弹，本家没火箭

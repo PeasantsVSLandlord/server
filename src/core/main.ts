@@ -32,15 +32,19 @@ let cards1 = [
     { name: "A", num: 12, suit: "DIAMOND" }
 ];
 let cards2 = [
+    { name: "K", num: 11, suit: "DIAMOND" },
+    { name: "K", num: 11, suit: "DIAMOND" },
+    { name: "K", num: 11, suit: "DIAMOND" },
+    { name: "K", num: 11, suit: "DIAMOND" },
     { name: "Q", num: 10, suit: "HEART" },
     { name: "Q", num: 10, suit: "HEART" },
     { name: "Q", num: 10, suit: "HEART" },
     { name: "Q", num: 10, suit: "HEART" },
     { name: "Q", num: 10, suit: "HEART" },
-    { name: "Q", num: 10, suit: "HEART" }
-    // { name: "Q", num: 10, suit: "HEART" },
-    // { name: "J", num: 9, suit: "DIAMOND" },
-    // { name: "J", num: 9, suit: "DIAMOND" },
+    { name: "Q", num: 10, suit: "HEART" },
+    { name: "J", num: 9, suit: "DIAMOND" },
+    { name: "J", num: 9, suit: "DIAMOND" },
+
     // { name: "J", num: 9, suit: "DIAMOND" },
     // { name: "J", num: 9, suit: "DIAMOND" },
     // { name: "10", num: 8, suit: "HEART" },

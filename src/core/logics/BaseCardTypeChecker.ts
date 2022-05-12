@@ -4,11 +4,11 @@
  */
 import { Card } from "../CardsDeclare";
 import {
-    cardSort,
+    cardSort, checkCardsN,
     isDecrease,
-    isIncludeTwoAndJokers,
+    isIncludeTwoAndJokers, isNotUndefined,
     isPlaneTools,
-    isStraightN,
+    isStraightN, isXWithY,
     searchFrequency
 } from "../utils/CardUtils";
 
@@ -38,7 +38,6 @@ class BaseCardTypeChecker {
             return cardPoints.includes(14) && cardPoints.includes(15);
         } else return false;
     };
-
     //三条
     isTriple = () => {
         if (this.cards.length === 3) {
@@ -46,43 +45,13 @@ class BaseCardTypeChecker {
             return triple.every(item => item === triple[0]);
         } else return false;
     };
-
     //三带一
     isTripleAndSingle = () => {
-        if (this.cards.length === 4) {
-            let points = this.cards.map(v => v.num);
-            let pointSet: Set<number> = new Set();
-            let tripleNum: number;
-            for (let i = 0; i < points.length; i++) {
-                let setLength = pointSet.size;
-                pointSet.add(points[i]);
-                if (setLength === pointSet.size) {
-                    tripleNum = points[i];
-                }
-            }
-            if (searchFrequency(points, tripleNum) !== 3) return false;
-            let others: Array<number> = [];
-            pointSet.forEach(num => {
-                if (tripleNum !== num) {
-                    others.push(num);
-                }
-            });
-            return tripleNum !== others[0];
-        } else return false;
+        return isXWithY(this.cards, 3, 1);
     };
-
     //三带一对
     isTripleAndDouble = () => {
-        if (this.cards.length === 5) {
-            let triple = this.cards.map(v => v.num);
-            const testFreq = searchFrequency(triple, triple[0]);
-            const _double = testFreq === 3 ?
-                triple.splice(triple.length - 2) :
-                triple.splice(0, 2);
-            return triple[0] !== _double[0]
-                && triple.every(item => item === triple[0])
-                && _double[0] === _double[1];
-        } else return false;
+        return isXWithY(this.cards, 3, 2);
     };
 
     //炸弹(四张)
@@ -93,56 +62,20 @@ class BaseCardTypeChecker {
         } else return false;
     };
 
+    //TODO
     //无翼飞机(N个连续数的三张, N>1)
     isNoWingPlane = () => {
         return isStraightN(3, this.cards);
     };
 
-    //四带两张
+    //四带两张(两张可同可不同)
     isQuadAndTwoSingle = () => {
-        if (this.cards.length === 6) {
-            let points = this.cards.map(v => v.num);
-            let pointSet: Set<number> = new Set();
-            let quadNum: number;
-            for (let i = 0; i < points.length; i++) {
-                let setLength = pointSet.size;
-                pointSet.add(points[i]);
-                if (setLength === pointSet.size) {
-                    quadNum = points[i];
-                }
-            }
-            if (searchFrequency(points, quadNum) !== 4) return false;
-            let others: Array<number> = [];
-            pointSet.forEach(num => {
-                if (quadNum !== num) {
-                    others.push(num);
-                }
-            });
-            return quadNum !== others[0] && others[0] !== others[1];
-        } else return false;
+        return isXWithY(this.cards, 4, 2) || isXWithY(this.cards, 4, 1, 6, 1, 2);
     };
 
     //四带两对
     isQuadAndTwoDouble = () => {
-        if (this.cards.length === 8) {
-            let points = this.cards.map(v => v.num);
-            let pointSet: Set<number> = new Set(points);
-            let flag = true;
-            let quadNum: Array<number> = [];
-            let doubleNum: Array<number> = [];
-            pointSet.forEach(num => {
-                const freq = searchFrequency(points, num);
-                if (freq === 4) {
-                    quadNum.push(num);
-                } else if (freq === 2) {
-                    doubleNum.push(num);
-                } else {
-                    flag = false;
-                }
-            });
-            if (!flag) return false;
-            return doubleNum.length === 2 && quadNum.length === 1;
-        } else return false;
+        return isXWithY(this.cards, 4, 2, 8, 1, 2);
     };
 
     //顺子
@@ -234,6 +167,15 @@ class BaseCardTypeChecker {
     //大航天飞机(N对四条+N或2N个对子, N>2)
     isBigSpaceShuttle = () => {
         if (this.cards.length >= 12 && (this.cards.length % 6 === 0 || this.cards.length % 8 === 0)) {
+            let res = checkCardsN(this.cards);
+            // if (isNotUndefined(res["4"]) && isNotUndefined(res["2"])) {
+            //     if (res["4"].length>=2&&res["2"].length>=2){
+            //
+            //     }
+            //     return res[x.toString()].length === a && res[y.toString()].length === b;
+            // }
+
+
             let points: Array<number> = this.cards.map(v => v.num);
             if (isIncludeTwoAndJokers(points)) return false;
             let splicesArr: Array<Array<number>> = isPlaneTools(points);

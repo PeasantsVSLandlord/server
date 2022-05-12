@@ -1,6 +1,10 @@
 import { Card } from "../CardsDeclare";
 import { BaseCardTypeChecker } from "../logics/BaseCardTypeChecker";
 
+export function isNotUndefined(obj: any): boolean {
+    return typeof obj !== "undefined";
+}
+
 /**
  * 牌组排序, 从大到小
  * @param cards 牌组(手牌、地主牌等)
@@ -57,7 +61,7 @@ export function isIncrease(arr: number[], i: number) {
  * @param cards 牌组
  * @param rate 初始牌基底倍
  */
-export function isStraightN(num, cards) {
+export function isStraightN(num: number, cards: Array<Card>) {
     let switcher = 6;
     if (num === 4) switcher = 8;
     if (cards.length >= switcher && cards.length % num === 0) {
@@ -86,6 +90,24 @@ export function isStraightN(num, cards) {
 }
 
 /**
+ * 判断X带Y牌型
+ * @param cards 牌组
+ * @param x 主带牌张
+ * @param y 被带牌张
+ * @param sum 满足规则的最小牌数
+ * @param a x需要几组
+ * @param b b需要几组
+ */
+export function isXWithY(cards: Array<Card>, x: number, y: number, sum: number = x + y, a: number = 1, b: number = 1): boolean {
+    if (cards.length === sum) {
+        let res = checkCardsN(cards);
+        if (isNotUndefined(res[x.toString()]) && isNotUndefined(res[y.toString()])) {
+            return res[x.toString()].length === a && res[y.toString()].length === b;
+        }
+    } else return false;
+}
+
+/**
  * 判断飞机手牌切割
  * @param points
  */
@@ -101,7 +123,6 @@ export function isPlaneTools(points): Array<Array<number>> {
             } else sArr.push([v]);
         }
     });
-    console.log(sArr);
     return sArr;
 }
 
