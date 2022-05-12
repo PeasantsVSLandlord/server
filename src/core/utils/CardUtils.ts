@@ -1,4 +1,5 @@
 import { Card } from "../CardsDeclare";
+import { BaseCardTypeChecker } from "../logics/BaseCardTypeChecker";
 
 /**
  * 牌组排序, 从大到小
@@ -100,6 +101,7 @@ export function isPlaneTools(points): Array<Array<number>> {
             } else sArr.push([v]);
         }
     });
+    console.log(sArr)
     return sArr;
 }
 
@@ -109,4 +111,19 @@ export function isPlaneTools(points): Array<Array<number>> {
  */
 export function isIncludeTwoAndJokers(points: Array<number>): boolean {
     return points.includes(13) || points.includes(14) || points.includes(15);
+}
+
+/**
+ * 检测牌组类别(单、对子、炸弹...)
+ * @param cards
+ */
+export function getCardType(cards: Array<Card>): string {
+    const cardsChecker = new BaseCardTypeChecker(cards);
+    let cardType: string;
+    Object.getOwnPropertyNames(cardsChecker).forEach(k => {
+        if (k !== "cards") {
+            if (cardsChecker[k]()) cardType = k;
+        }
+    });
+    return cardType;
 }
