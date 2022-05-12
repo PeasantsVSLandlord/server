@@ -53,7 +53,6 @@ class BaseCardTypeChecker {
     isTripleAndDouble = () => {
         return isXWithY(this.cards, 3, 2);
     };
-
     //炸弹(四张)
     isBomb = () => {
         if (this.cards.length === 4) {
@@ -61,23 +60,18 @@ class BaseCardTypeChecker {
             return quad.every(item => item === quad[0]);
         } else return false;
     };
-
-    //TODO
     //无翼飞机(N个连续数的三张, N>1)
     isNoWingPlane = () => {
         return isStraightN(3, this.cards);
     };
-
     //四带两张(两张可同可不同)
     isQuadAndTwoSingle = () => {
         return isXWithY(this.cards, 4, 2) || isXWithY(this.cards, 4, 1, 6, 1, 2);
     };
-
     //四带两对
     isQuadAndTwoDouble = () => {
         return isXWithY(this.cards, 4, 2, 8, 1, 2);
     };
-
     //顺子
     isStraight = () => {
         if (this.cards.length >= 5) {
@@ -90,53 +84,30 @@ class BaseCardTypeChecker {
             return flag;
         } else return false;
     };
-
     //连对
     isDoubleStraight = () => {
         return isStraightN(2, this.cards);
     };
-
     //小飞机(三带一*2N)
     isSmallPlane = () => {
         if (this.cards.length >= 8 && this.cards.length % 4 === 0) {
-            let points: Array<number> = this.cards.map(v => v.num);
-            if (isIncludeTwoAndJokers(points)) return false;
-            let splicesArr: Array<Array<number>> = isPlaneTools(points);
-            let tripleIndexes: Array<number> = [];
-            let others: Array<Array<number>> = [];
-            splicesArr.forEach(v => {
-                v.length === 3 ? tripleIndexes.push(v[0]) : others.push(v);
-            });
-            //三条必须连续
-            if (!isDecrease(tripleIndexes, tripleIndexes.length - 1)) return false;
-            //单数必须与三条对数匹配
-            return tripleIndexes.length === others.flat(1).length;
+            let res = checkCardsN(this.cards);
+            if (isNotUndefined(res["3"]) && isNotUndefined(res["1"])) {
+                if (res["3"].length === res["1"].length){
+                    return isStraightN(3,this.cards);
+                }
+            }
         } else return false;
     };
     //大飞机(三带二*2N)
     isBigPlane = () => {
         if (this.cards.length >= 10 && this.cards.length % 5 === 0) {
-            let points: Array<number> = this.cards.map(v => v.num);
-            if (isIncludeTwoAndJokers(points)) return false;
-            let splicesArr: Array<Array<number>> = isPlaneTools(points);
-            let tripleIndexes: Array<number> = [];
-            let otherDoubles: Array<Array<number>> = [];
-            splicesArr.forEach(v => {
-                v.length === 3 ? tripleIndexes.push(v[0]) : otherDoubles.push(v);
-            });
-            //三条必须连续
-            if (!isDecrease(tripleIndexes, tripleIndexes.length - 1)) return false;
-            //其余牌必须全是对子
-            for (let i = 0; i < otherDoubles.length; i++) {
-                let toTest = otherDoubles[i];
-                if (toTest.length !== 2) {
-                    return false;
-                } else if (toTest[0] !== toTest[1]) {
-                    return false;
+            let res = checkCardsN(this.cards);
+            if (isNotUndefined(res["3"]) && isNotUndefined(res["2"])) {
+                if (res["3"].length === res["2"].length){
+                    return isStraightN(3,this.cards);
                 }
             }
-            //对子数必须与三条数匹配
-            return tripleIndexes.length === otherDoubles.length;
         } else return false;
     };
 
