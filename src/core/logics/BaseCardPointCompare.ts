@@ -4,7 +4,7 @@ import { cardSort, getCardType } from "../utils/CardUtils";
 /**
  * 判断牌组点数大小(是否能压)
  */
-class BaseCardPointCompare {
+class BaseCardPointCompareBackup {
     get thisCards(): Array<Card> {
         return this._thisCards;
     }
@@ -59,8 +59,8 @@ class BaseCardPointCompare {
                     case "isBomb":
                         return this._thisCards[0].num > this._lastCards[0].num;
                     case "isTripleAndSingle":
-
                     case "isTripleAndDouble":
+                        return
                 }
             } else return false;
         }
@@ -70,4 +70,4 @@ class BaseCardPointCompare {
 }
 
 
-export { BaseCardPointCompare };
+export { BaseCardPointCompareBackup };

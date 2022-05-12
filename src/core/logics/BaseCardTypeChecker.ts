@@ -3,11 +3,15 @@
  * 进来的牌在构造器内先从大到小排序
  */
 import { Card } from "../CardsDeclare";
-import { cardSort, isDecrease, isIncludeTwoAndJokers, isPlaneTools, isStraightN } from "../utils/CardUtils";
-//查询数字在数组中出现次数
-const frequency = (arr, index): number => {
-    return arr.lastIndexOf(index) - arr.indexOf(index) + 1;
-};
+import {
+    cardSort,
+    isDecrease,
+    isIncludeTwoAndJokers,
+    isPlaneTools,
+    isStraightN,
+    searchFrequency
+} from "../utils/CardUtils";
+
 
 class BaseCardTypeChecker {
     private readonly cards: Array<Card>;
@@ -56,7 +60,7 @@ class BaseCardTypeChecker {
                     tripleNum = points[i];
                 }
             }
-            if (frequency(points, tripleNum) !== 3) return false;
+            if (searchFrequency(points, tripleNum) !== 3) return false;
             let others: Array<number> = [];
             pointSet.forEach(num => {
                 if (tripleNum !== num) {
@@ -71,7 +75,7 @@ class BaseCardTypeChecker {
     isTripleAndDouble = () => {
         if (this.cards.length === 5) {
             let triple = this.cards.map(v => v.num);
-            const testFreq = frequency(triple, triple[0]);
+            const testFreq = searchFrequency(triple, triple[0]);
             const _double = testFreq === 3 ?
                 triple.splice(triple.length - 2) :
                 triple.splice(0, 2);
@@ -107,7 +111,7 @@ class BaseCardTypeChecker {
                     quadNum = points[i];
                 }
             }
-            if (frequency(points, quadNum) !== 4) return false;
+            if (searchFrequency(points, quadNum) !== 4) return false;
             let others: Array<number> = [];
             pointSet.forEach(num => {
                 if (quadNum !== num) {
@@ -127,7 +131,7 @@ class BaseCardTypeChecker {
             let quadNum: Array<number> = [];
             let doubleNum: Array<number> = [];
             pointSet.forEach(num => {
-                const freq = frequency(points, num);
+                const freq = searchFrequency(points, num);
                 if (freq === 4) {
                     quadNum.push(num);
                 } else if (freq === 2) {

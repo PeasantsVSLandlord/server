@@ -101,7 +101,7 @@ export function isPlaneTools(points): Array<Array<number>> {
             } else sArr.push([v]);
         }
     });
-    console.log(sArr)
+    console.log(sArr);
     return sArr;
 }
 
@@ -126,4 +126,49 @@ export function getCardType(cards: Array<Card>): string {
         }
     });
     return cardType;
+}
+
+//查询数字在数组中出现次数
+export function searchFrequency(arr: Array<number>, index: number): number {
+    return arr.lastIndexOf(index) - arr.indexOf(index) + 1;
+}
+
+/**
+ * 列举牌组的N对子明细(最多四张)
+ * 如 10,10,10,10,10,10会被认为4张10加一组对子10
+ */
+export function checkCardsN(cards: Array<Card>) {
+    cardSort(cards);
+    const points = cards.map(v => v.num);
+    let cacheArr: Array<number> = [];
+    let results = {};
+    points.forEach((num, index) => {
+        if (index === 0) {
+            cacheArr.push(num);
+        } else if (index === points.length - 1) {
+            if (num === cacheArr[cacheArr.length - 1]) {
+                cacheArr.push(num);
+            } else {
+                if (typeof results[1] === "undefined") {
+                    results[1] = [];
+                }
+                results[1].push([num]);
+            }
+            if (typeof results[cacheArr.length] === "undefined") {
+                results[cacheArr.length] = [];
+            }
+            results[cacheArr.length].push(cacheArr);
+        } else {
+            if (cacheArr.length < 4 && num === cacheArr[cacheArr.length - 1]) {
+                cacheArr.push(num);
+            } else {
+                if (typeof results[cacheArr.length] === "undefined") {
+                    results[cacheArr.length] = [];
+                }
+                results[cacheArr.length].push(cacheArr);
+                cacheArr = [num];
+            }
+        }
+    });
+    return results;
 }
