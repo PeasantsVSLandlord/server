@@ -138,15 +138,13 @@ class BaseCardTypeChecker {
     //大航天飞机(N对四条+N或2N个对子, N>2)
     isBigSpaceShuttle = () => {
         if (this.cards.length >= 12 && (this.cards.length % 6 === 0 || this.cards.length % 8 === 0)) {
-            let res = checkCardsN(this.cards);
+            // let res = checkCardsN(this.cards);
             // if (isNotUndefined(res["4"]) && isNotUndefined(res["2"])) {
             //     if (res["4"].length>=2&&res["2"].length>=2){
             //
             //     }
             //     return res[x.toString()].length === a && res[y.toString()].length === b;
             // }
-
-
             let points: Array<number> = this.cards.map(v => v.num);
             if (isIncludeTwoAndJokers(points)) return false;
             let splicesArr: Array<Array<number>> = isPlaneTools(points);
